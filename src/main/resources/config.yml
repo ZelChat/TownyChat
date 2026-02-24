@@ -1,0 +1,56 @@
+# ──────────────────────────────────────────────
+#              TownyChatAddon Configuration
+# ──────────────────────────────────────────────
+#
+# Support:       https://discord.gg/zeltuv
+#
+# MiniMessage Converter: https://tehbrian.xyz/legacy-to-minimessage/
+# MiniMessage Documentation: https://docs.advntr.dev/minimessage/format.html
+# Small Caps: https://fsymbols.com/generators/smallcaps/
+# Icons: https://utf8-icons.com/
+#
+#
+# Available Actions:
+# 1 - RUN_COMMAND:/command
+# 2 - SUGGEST_COMMAND:/command
+# 3 - OPEN_URL:https://your.favourite.url
+# 4 - COPY_TO_CLIPBOARD:your text to copy
+#
+# ──────────────────────────────────────────────
+
+# ──────────────── Formats ────────────────
+#
+# If you do not want to specify an action or a hover put "none" eg: hover: "none" action: "none"
+#
+formats:
+  town-chat:
+    format: "&8[&f%townyadvanced_town%&r&8] &f%player_name% &8» &a{message}"
+    hover: ""
+    action: "none"
+  ally-chat:
+    format: "&8[&a%townyadvanced_town%&r&8] &f%player_name% &8» &e{message}"
+    hover: ""
+    action: "none"
+  nation-chat:
+    format: "&8[&f%townyadvanced_nation%&r&8] &f%player_name% &8» &c{message}"
+    hover: ""
+    action: "none"
+
+# ──────────────── Messages ────────────────
+messages:
+  # Message displayed when user does not have a town and uses /townchat
+  no-town: "<red>You are not in a town!"
+  # Message displayed when user does not have a nation and uses /nationchat
+  no-nation: "<red>You are not in a nation!"
+  # Message displayed when user does not have an ally and uses /allychat
+  no-allies: "<red>Your town has no allies!"
+  # Message displayed when user is already in global chat
+  already-global-chat: "<red>You are already in global chat!"
+  # Message displayed when user toggles town chat
+  town-chat-enable: "<green>You will now chat in your town"
+  # Message displayed when user toggles nation chat
+  nation-chat-enable: "<green>You will now chat in your nation"
+  # Message displayed when user toggles ally chat
+  ally-chat-enable: "<green>You will now chat with your allies"
+  # Message displayed when user toggles global chat
+  global-chat-enable: "<green>You will now chat in global chat"

@@ -1,0 +1,5 @@
+name: TownyChatAddon
+version: '${version}'
+main: it.pino.townychat.addon.PluginBootstrap
+api-version: '1.21'
+depends: ["ZelChat", "Towny"]

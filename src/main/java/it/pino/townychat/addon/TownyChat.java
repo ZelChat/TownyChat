@@ -3,12 +3,12 @@ package it.pino.townychat.addon;
 import com.google.common.base.Preconditions;
 import com.palmergames.bukkit.towny.TownyAPI;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import it.pino.townychat.addon.chat.TownyChatListener;
 import it.pino.townychat.addon.chat.TownyChatModule;
 import it.pino.townychat.addon.chat.format.TownyFormatRegistry;
 import it.pino.townychat.addon.command.*;
 import it.pino.townychat.addon.config.ConfigurationManager;
 import it.pino.townychat.addon.lang.TownyLanguageRegistry;
+import it.pino.townychat.addon.user.TownyUserListeners;
 import it.pino.townychat.addon.user.TownyUserService;
 import it.pino.zelchat.api.ZelChatAPI;
 import org.bukkit.Bukkit;
@@ -72,6 +72,7 @@ public final class TownyChat implements PluginLifeCycle {
         getZelchatAPI().getModuleManager().register(boostrapPlugin , module);
     }
 
+
     private void registerCommands(){
         boostrapPlugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             new AllyChatCommand(this).register(event);
@@ -83,7 +84,7 @@ public final class TownyChat implements PluginLifeCycle {
     }
 
     private void registerListener(){
-        boostrapPlugin.getServer().getPluginManager().registerEvents(new TownyChatListener(this), boostrapPlugin);
+       boostrapPlugin.getServer().getPluginManager().registerEvents(new TownyUserListeners(townyService), boostrapPlugin);
     }
 
     private void reloadServices(){

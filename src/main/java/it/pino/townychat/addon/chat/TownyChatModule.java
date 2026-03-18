@@ -4,19 +4,23 @@ import it.pino.townychat.addon.TownyChat;
 import it.pino.townychat.addon.chat.format.TownyChatFormat;
 import it.pino.zelchat.api.message.ChatMessage;
 import it.pino.zelchat.api.message.channel.ChannelType;
+import it.pino.zelchat.api.message.formatter.ChatFormatDecorator;
 import it.pino.zelchat.api.message.state.MessageState;
 import it.pino.zelchat.api.module.ChatModule;
 import it.pino.zelchat.api.module.annotation.ChatModuleSettings;
 import it.pino.zelchat.api.module.priority.ModulePriority;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
-@ChatModuleSettings(pluginOwner = "TownyChatAddon", priority = ModulePriority.LOWEST)
+@ChatModuleSettings(pluginOwner = "TownyChatAddon", priority = ModulePriority.HIGHEST)
 public final class TownyChatModule implements ChatModule {
 
     private final @NotNull TownyChat main;
+    private final @NotNull ChatFormatDecorator decorator;
 
     public TownyChatModule(@NotNull TownyChat mainInstance) {
         this.main = mainInstance;
+        this.decorator = main.getZelchatAPI().getFormatDecorator();
     }
 
     @Override
@@ -47,6 +51,7 @@ public final class TownyChatModule implements ChatModule {
 
             final var residents = main.getUserService().getTownOnlineResidentsAudience(town);
             chatMessage.getChannel().setViewers(residents);
+            dispatch(chatMessage);
 
         }, () -> main.getUserService().removeUserChannel(player.getUniqueId()));
     }
@@ -59,6 +64,7 @@ public final class TownyChatModule implements ChatModule {
 
             final var residents = main.getUserService().getNationOnlineResidentsAudience(nation);
             chatMessage.getChannel().setViewers(residents);
+            dispatch(chatMessage);
 
         }, () -> main.getUserService().removeUserChannel(player.getUniqueId()));
     }
@@ -71,6 +77,7 @@ public final class TownyChatModule implements ChatModule {
 
             final var residents = main.getUserService().getAlliesOnlineResidentsAudience(town);
             chatMessage.getChannel().setViewers(residents);
+            dispatch(chatMessage);
 
         }, () -> main.getUserService().removeUserChannel(player.getUniqueId()));
     }
@@ -78,6 +85,15 @@ public final class TownyChatModule implements ChatModule {
     private void applyCommonSettings(final @NotNull ChatMessage chatMessage, final @NotNull TownyChatFormat format) {
         chatMessage.setFormat(format);
         chatMessage.getChannel().setType(ChannelType.CUSTOM);
+    }
+
+    private void dispatch(@NotNull ChatMessage chatMessage) {
+        if(Bukkit.getPluginManager().getPlugin("DiscordSRV") == null)
+            return;
+
+        chatMessage.setState(MessageState.CANCELLED);
+        decorator.applyFormat(chatMessage);
+        chatMessage.getChannel().getViewers().forEach(viewer -> viewer.sendMessage(chatMessage.getMessage()));
     }
 
 }
